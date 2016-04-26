@@ -1,29 +1,34 @@
 //%scope é considerado o model no Angular.js
 //M e C do MVC no mesmo lugar
 
-angular.module('contatooh').controller('ContatosController', function ($scope) {
-    $scope.total = 0;
+angular.module('contatooh').controller('ContatosController', function (Contato, $scope) {
+    $scope.contatos = [];
     $scope.filtro = '';
+    $scope.mensagem = {texto: ''};
     
-    $scope.incrementa = function () {
-        $scope.total++;
+    function buscaContatos () {
+        Contato.query(  //Faz um GET internamente
+            function (contatos) {
+                $scope.contatos = contatos;
+                $scope.mensagem = {};
+            },
+            function (erro) {
+                $scope.mensagem = {texto: "Não foi possivel retornar contatos"};
+                console.log(erro);
+            }
+        );   
+    }
+    
+    buscaContatos();
+    
+    $scope.remove = function (contato) {
+        Contato.delete({id: contato._id},   //delete nos permite dois callbacks, um para sucesso outro para falha
+                    buscaContatos,
+                    function (erro) {
+                        $scope.mensagem = {texto: "Não foi possivel remover o contato"};
+                        console.log(erro);
+                    });
     };
     
-    $scope.contatos = [
-        {
-            "_id": 1,
-            "nome": "Contato Angular 1",
-            "email": "cont1@empresa.com.br"
-        },
-        {
-            "_id": 2,
-            "nome": "Contato Angular 2",
-            "email": "cont2@empresa.com.br"
-        },
-        {
-            "_id": 3,
-            "nome": "Contato Angular 3",
-            "email": "cont3@empresa.com.br"
-        }
-    ];
+    
 });
