@@ -6,6 +6,8 @@ ehthumbs.db
 Desktop.ini
 node_modules/
 public/vendor/
+dist/
+.tmp/
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/

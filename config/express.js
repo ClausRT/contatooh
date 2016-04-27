@@ -1,6 +1,10 @@
 var express = require ('express')
   , load = require ('express-load')
   , bodyParser = require('body-parser')
+  , cookieParser = require('cookie-parser')
+  , session = require('express-session')
+  , passport = require('passport')
+  , helmet = require('helmet')
   ;
 
 module.exports = function () {
@@ -13,11 +17,27 @@ module.exports = function () {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
     app.use(require('method-override')());
+    app.use(cookieParser());
+    app.use(session({
+        secret: 'homem avestruz',
+        resave: true,
+        saveUninitialized: true
+    }));
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use(helmet.xframe());
+    app.use(helmet.xssFilter());
+    app.use(helmet.nosniff());
+    app.disable('x-powered-by');
     
     load('models', {cwd: 'app'})    //cwd faz o load procurar as pastas models, controllers e views na pasta app e não na pasta raiz contatooh
         .then('controllers')
         .then('routes')
         .into(app);
+    
+    app.get('*', function (req, res) {
+        res.status(404).render('404');
+    });
     
     return app;
 };
