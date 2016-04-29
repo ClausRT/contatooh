@@ -8,6 +8,9 @@ node_modules/
 public/vendor/
 dist/
 .tmp/
+.DS_Store
+.DS_Store?
+scripts/
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
