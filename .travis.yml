@@ -1,6 +1,13 @@
 language: node.js
 node_js:
   - 0.10
+services:
+  - mongodb
+env:
+  global:
+    - NODE_ENV: test
+addons:
+  sauce_connect: true
 notifications:
   - clausrt@outlook.com
 before_install:
@@ -13,7 +20,10 @@ before_install:
 install:
   - npm install
 before_script:
+  - node test/data.js
   - grunt
   - cd dist
 script:
   - karma start config/karma.config.js --single-run --browsers PhantomJS
+  - node server &
+  - protractor config/protractor.js
