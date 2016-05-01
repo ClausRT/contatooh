@@ -6,7 +6,8 @@ var passport = require('passport')
 
 module.exports = function () {
     var Usuario = mongoose.model('Usuario')
-      , githubCallback = 'http://' + config.domain + ':' + config.port + '/auth/github/callback';
+      , 'http://contatooh-claustessmann.rhcloud.com/auth/github/callback' //githubCallback = 'http://' + config.domain + ':' + config.port + '/auth/github/callback'
+      ;
     
     passport.use(new GitHubStrategy({
         clientID: config.clientID,
