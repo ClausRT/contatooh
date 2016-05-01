@@ -5,12 +5,13 @@ var passport = require('passport')
   ;
 
 module.exports = function () {
-    var Usuario = mongoose.model('Usuario');
+    var Usuario = mongoose.model('Usuario')
+      , githubCallback = 'http://' + config.domain + ':' + config.port + '/auth/github/callback';
     
     passport.use(new GitHubStrategy({
         clientID: config.clientID,
         clientSecret: config.clientSecret,
-        callbackURL: 'http://localhost:3000/auth/github/callback'   //????
+        callbackURL: githubCallback
     }, function (accessToken, refreshToken, profile, done) {
         Usuario.findOrCreate(   //Não tem suporte a promises
             {"login": profile.username},
