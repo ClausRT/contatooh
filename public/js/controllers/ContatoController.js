@@ -21,6 +21,7 @@ angular.module('contatooh').controller('ContatoController', function ($scope, $r
             .then(function () {
                 $scope.mensagem = {texto: 'Salvo com sucesso'};
                 $scope.contato = new Contato(); //limpa o formulario
+                $scope.$broadcast('contatoSalvo');
             })
             .catch (function () {
                 $scope.mensagem = {texto: 'Não foi possível salvar'};
