@@ -1,29 +1,43 @@
 language: node.js
 node_js:
-  - 0.10
+- 0.1
 services:
-  - mongodb
+- mongodb
 env:
   global:
-    - NODE_ENV: test
+  - NODE_ENV: test
 addons:
   sauce_connect: true
 notifications:
-  - clausrt@outlook.com
+- clausrt@outlook.com
 before_install:
-  - npm install -g bower
-  - npm install -g grunt-cli
-  - npm install -g karma-cli
-  - npm install -g protractor@1
-  - webdriver-manager update
-  - bower install
+- npm install -g bower
+- npm install -g grunt-cli
+- npm install -g karma-cli
+- npm install -g protractor@1
+- webdriver-manager update
+- bower install
 install:
-  - npm install
+- npm install
 before_script:
-  - node test/data.js
-  - grunt
-  - cd dist
+- node test/data.js
+- grunt minifica
 script:
-  - karma start config/karma.config.js --single-run --browsers PhantomJS
-  - node server &
-  - protractor config/protractor.js
+- karma start config/karma.config.js --single-run --browsers PhantomJS
+- node server &
+- protractor config/protractor.js
+before_deploy:
+- git config --global user.email 'travis@travis-ci.com'
+- git config --global user.name 'Travis CI'
+- git checkout $TRAVIS_BRANCH
+- git add --all
+- git commit -am "Travis commit"
+deploy:
+  provider: openshift
+  user: clausrt@outlook.com
+  password:
+    secure: CAc5T9Z+GJWnaMSDS+sblzOd0WjoSZi1nT8pOYM7O7rAYU/U8lJfIxw4cU3meQ85XZJf5H7GpZswe36S9NbUMR93hfte1fmHGE4KJktLyGD2wovQFm8n3Y2xcMmDeeXLWEDMqq39SgaHQTPkPOpC752Ssb/7N1hrhAkfjnOJu1CFPf39n4DXz2krh7pp5nCxPCf3+nw6T9CwOv8ls4RYFKVKSVdUZ6KhlnT2SZjGa89wRYdFP3n533FxoXcBQx933v0nzb+5HggezHPaTS/8gQ1T+XlPupNKQ+uH5NZwajPvD3CjwVCE6bqVuinSvJIBu/YjG70zc935PvpUQM2P+fG9d5X5sN8Ou1YYlL0tIP+NiBISqnxsFeiXIK79J83aQcpIfR2RTxUbBDEz36ZkAuv1FNetExns+DprIcDoYGbyhnCDO/EvttP09HP1S8KkWwHlm6LMSbbH4G/t3XOFoBUBpu6389yfZkWt4EZOhthOD56vapyKMEKAmRUkF+daXY3xF6Z6IHsxT4z22VeS/b6BV5vBhG1Aw93DwyTRtxGzeNJRgyNqGtU/FpICdyrhJ4VawfES+43ckoMfPBSfTn9xFqWtjsiimeOqeG6AfYQgX446TsCozZgWG9Z5RIvaM2czQMLPIezjSU7PM74+vRvodpFr6DA1Ey2DpFDfsfE=
+  app: contatooh
+  domain: contatooh-claustessmann.rhcloud.com
+  on:
+    repo: ClausRT/contatooh
